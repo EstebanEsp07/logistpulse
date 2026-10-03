@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>LogistPulse</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 720px; margin: 3rem auto; padding: 0 1rem; color: #1b2a41; }
+    code { background: #eef2f7; padding: 2px 6px; border-radius: 4px; }
+    li { margin: .4rem 0; }
+  </style>
+</head>
+<body>
+  <h1>LogistPulse</h1>
+  <p>Esqueleto MVC — Sprint 1. Servicio: <strong>{{ service }}</strong>, base de datos: <strong>{{ db_status }}</strong>.</p>
+  <ul>
+    {% for ep in endpoints %}
+    <li><code>{{ ep.method }} {{ ep.path }}</code> — {{ ep.story }}: {{ ep.desc }}</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
