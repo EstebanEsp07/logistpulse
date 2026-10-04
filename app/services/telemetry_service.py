@@ -19,3 +19,15 @@ def record_reading(device_id, metric, value, unit):
     db.session.add(reading)
     db.session.commit()
     return reading
+
+
+def list_readings(device_id=None, metric=None, limit=20):
+    """HU-LP-07: últimas lecturas (más recientes primero), con filtros opcionales."""
+    if limit < 1 or limit > 100:
+        raise DomainError("limit debe estar entre 1 y 100", 400)
+    q = TelemetryReading.query
+    if device_id:
+        q = q.filter_by(device_id=device_id)
+    if metric:
+        q = q.filter_by(metric=metric)
+    return q.order_by(TelemetryReading.id.desc()).limit(limit).all()
