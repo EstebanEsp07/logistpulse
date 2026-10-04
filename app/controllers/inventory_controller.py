@@ -16,5 +16,6 @@ def list_inventory():
             warehouse_id = int(warehouse_id)
         except ValueError:
             raise DomainError("warehouse_id debe ser entero", 400)
-    items = svc.list_inventory(warehouse_id, request.args.get("sku"))
+    low_stock = request.args.get("low_stock", "").lower() == "true"
+    items = svc.list_inventory(warehouse_id, request.args.get("sku"), low_stock)
     return {"results": [inventory_view(i) for i in items]}
