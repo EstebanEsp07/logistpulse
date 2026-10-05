@@ -18,3 +18,15 @@ def upsert_rule():
         raise DomainError("Campos obligatorios: warehouse_id, product_id, reorder_point, reorder_qty", 400)
     rule, created = svc.upsert_rule(warehouse_id, product_id, reorder_point, reorder_qty)
     return rule_view(rule), (201 if created else 200)
+
+
+@bp.get("/replenishment-rules")
+def list_rules():
+    """HU-LP-02: GET /api/replenishment-rules?warehouse_id=N"""
+    warehouse_id = request.args.get("warehouse_id")
+    if warehouse_id is not None:
+        try:
+            warehouse_id = int(warehouse_id)
+        except ValueError:
+            raise DomainError("warehouse_id debe ser entero", 400)
+    return {"results": [rule_view(r) for r in svc.list_rules(warehouse_id)]}
