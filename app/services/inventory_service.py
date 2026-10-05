@@ -3,7 +3,7 @@ from ..models import Product, ReplenishmentRule, StockLevel, Warehouse
 from .errors import DomainError
 
 
-def list_inventory(warehouse_id=None, sku=None):
+def list_inventory(warehouse_id=None, sku=None, low_stock=False):
     """HU-LP-01: existencias por almacén/producto con indicador de reposición."""
     q = StockLevel.query.join(Product)
     if warehouse_id is not None:
@@ -20,6 +20,8 @@ def list_inventory(warehouse_id=None, sku=None):
                 "below_reorder_point": bool(rule and s.available <= rule.reorder_point),
             }
         )
+    if low_stock:
+        items = [i for i in items if i["below_reorder_point"]]
     return items
 
 
