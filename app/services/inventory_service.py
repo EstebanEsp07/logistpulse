@@ -42,3 +42,10 @@ def upsert_rule(warehouse_id, product_id, reorder_point, reorder_qty):
         rule.reorder_point, rule.reorder_qty = reorder_point, reorder_qty
     db.session.commit()
     return rule, created
+
+def list_rules(warehouse_id=None):
+    """HU-LP-02: lista las reglas de reposición, opcionalmente por almacén."""
+    q = ReplenishmentRule.query
+    if warehouse_id is not None:
+        q = q.filter_by(warehouse_id=warehouse_id)
+    return q.order_by(ReplenishmentRule.warehouse_id, ReplenishmentRule.product_id).all()
