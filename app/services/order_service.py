@@ -32,3 +32,11 @@ def create_order(customer_name, warehouse_id, lines):
     db.session.add(order)
     db.session.commit()
     return order
+
+
+def get_order(order_id):
+    """HU-LP-10: recupera un pedido con sus líneas."""
+    order = db.session.get(Order, order_id)
+    if not order:
+        raise DomainError("Pedido no encontrado", 404)
+    return order
